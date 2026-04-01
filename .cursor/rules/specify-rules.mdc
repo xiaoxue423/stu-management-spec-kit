@@ -1,0 +1,31 @@
+# python-study 开发指南
+
+基于所有功能计划自动生成. 最后更新时间: 2026-03-27
+
+## 活跃技术
+[EXTRACTED FROM ALL DESIGN.MD FILES]
+
+## 项目结构
+```
+src/
+tests/
+```
+
+## 命令
+cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] pytest [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] ruff check .
+
+## 代码风格
+Python 3.11（后端）, TypeScript 5.x（前端）: Follow standard conventions
+
+## 最近变更
+- feature/SPEC-202603271633/002-add-student-score-entry: Added Python 3.11（后端）, TypeScript 5.x（前端） + FastAPI + SQLAlchemy（后端）, React + Vite（前端）
+
+<!-- 手动添加内容开始 -->
+<!-- 手动添加内容结束 -->
+
+## Active Technologies
+- TypeScript 5.x（前端），Python 3.11（后端维持现状） + React + Vite + Ant Design（前端），FastAPI（后端维持现状） (feature/SPEC-202603301607/003-switch-antd-components)
+- 不适用（本次不新增存储结构，沿用现有后端数据源） (feature/SPEC-202603301607/003-switch-antd-components)
+
+## Recent Changes
+- feature/SPEC-202603301607/003-switch-antd-components: Added TypeScript 5.x（前端），Python 3.11（后端维持现状） + React + Vite + Ant Design（前端），FastAPI（后端维持现状）
