@@ -203,6 +203,6 @@ graph LR
 
 **目的**: 明确并验证“创建学生接口”与“学生列表查询接口”职责拆分，避免读写混用。
 
-- [ ] T036 [P] [US1] 在 `backend/tests/contract/test_list_students_api.py` 增加“列表接口仅查询、无创建副作用”合约断言
-- [ ] T037 [US1] 在 `backend/src/api/student_query.py` 补充接口注释与边界校验，确保 `GET /api/v1/students` 只读
-- [ ] T038 [Polish] 在 `specs/001-student-score-management/design.md` 与 `spec.md` 补充跨规范接口边界说明（关联 002 创建接口）
+- [X] T036 [P] [US1] 在 `backend/tests/contract/test_list_students_api.py` 增加“列表接口仅查询、无创建副作用”合约断言
+- [X] T037 [US1] 在 `backend/src/api/student_query.py` 补充接口注释与边界校验，确保 `GET /api/v1/students` 只读
+- [X] T038 [Polish] 在 `specs/001-student-score-management/design.md` 与 `spec.md` 补充跨规范接口边界说明（关联 002 创建接口）

@@ -14,6 +14,7 @@ from backend.src.services.student_score_service import DomainError, StudentScore
 
 router = APIRouter(prefix="/api/v1/students", tags=["students"])
 service = StudentScoreService()
+# 查询职责已拆分到 student_query.py 的 GET /api/v1/students，并在该文件处理只读参数校验。
 
 
 class CreateStudentBody(BaseModel):
@@ -43,20 +44,10 @@ def _raise_unknown() -> None:
 
 @router.post("")
 def create_student(body: CreateStudentBody) -> dict:
+    # 写接口职责：仅负责创建学生基础信息，不承载列表查询逻辑。
     try:
         student = service.create_student(CreateStudentRequest(name=body.name, gender=body.gender))
         return {"data": StudentResponse.from_model(student)}
-    except DomainError as exc:
-        _raise_http(exc)
-    except Exception:
-        _raise_unknown()
-
-
-@router.get("")
-def list_students() -> dict:
-    try:
-        students = service.list_students()
-        return {"data": [StudentResponse.from_model(s) for s in students]}
     except DomainError as exc:
         _raise_http(exc)
     except Exception:

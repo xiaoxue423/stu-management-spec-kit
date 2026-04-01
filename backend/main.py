@@ -3,6 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from backend.src.api.student_query import router as student_query_router
 from backend.src.api.student_scores import router as student_router
 
 app = FastAPI(title="Student Score API", version="0.1.0")
@@ -16,6 +17,7 @@ app.add_middleware(
 )
 
 app.include_router(student_router)
+app.include_router(student_query_router)
 
 
 @app.exception_handler(RequestValidationError)

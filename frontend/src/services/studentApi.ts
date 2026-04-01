@@ -50,11 +50,13 @@ function toStudentView(student: StudentDto): StudentView {
 }
 
 export async function listStudents(): Promise<StudentView[]> {
+  // 查询契约：该接口为只读列表查询，不承担任何创建/更新语义。
   const data = await request<{ data: StudentDto[] }>(BASE);
   return data.data.map(toStudentView);
 }
 
 export async function createStudent(payload: CreateStudentPayload): Promise<StudentDto> {
+  // 创建契约：该接口仅负责创建学生，不返回分页或查询元数据。
   const data = await request<{ data: StudentDto }>(BASE, {
     method: "POST",
     body: JSON.stringify(payload),

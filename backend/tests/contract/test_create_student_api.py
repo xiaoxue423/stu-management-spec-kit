@@ -52,3 +52,12 @@ def test_create_student_without_score_and_then_edit_form_has_empty_scores() -> N
     edit_form = client.get(f"/api/v1/students/{student_id}/edit-form")
     assert edit_form.status_code == 200
     assert edit_form.json()["data"]["scores"] == []
+
+
+def test_create_student_contract_is_write_only_boundary() -> None:
+    response = client.post("/api/v1/students", json={"name": "赵六", "gender": "female"})
+    assert response.status_code == 200
+    body = response.json()
+    assert "data" in body
+    assert "total" not in body
+    assert "items" not in body

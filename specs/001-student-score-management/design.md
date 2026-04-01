@@ -275,6 +275,7 @@ sequenceDiagram
 **约束说明**: “创建学生”与“查询学生列表”必须拆分为独立接口能力。  
 **当前范围**: 本功能仅实现只读查询接口（`GET /api/v1/students` 与 `GET /api/v1/students/{studentId}/scores`），不承载创建逻辑。  
 **跨规范协同**: 创建能力在 `specs/002-add-student-score-entry` 中定义并维护。
+**验证记录（2026-04-01）**: 已通过 `backend/tests/contract/test_list_students_api.py` 增加“无创建副作用”与“写语义参数拒绝”断言，确保列表接口保持只读。
 
 ## 8 宪章合规性检查
 本方案合规性评估结果：通过。

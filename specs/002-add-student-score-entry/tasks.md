@@ -262,7 +262,7 @@ graph LR
 
 **目的**: 落实“创建学生接口”与“学生列表查询接口”职责拆分并形成可回归验证。
 
-- [ ] T055 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 与 `test_list_students_api.py` 增加接口职责边界断言（写入/查询分离）
-- [ ] T056 [US1] 在 `backend/src/api/student_scores.py` 分离创建与列表控制器职责注释与参数校验逻辑
-- [ ] T057 [P] [US1] 在 `frontend/src/services/studentApi.ts` 明确 `createStudent` 与 `listStudents` 调用契约，补充接口边界注释
-- [ ] T058 [Polish] 在 `specs/001-student-score-management/design.md` 与 `specs/002-add-student-score-entry/design.md` 同步接口拆分验证记录
+- [X] T055 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 与 `test_list_students_api.py` 增加接口职责边界断言（写入/查询分离）
+- [X] T056 [US1] 在 `backend/src/api/student_scores.py` 分离创建与列表控制器职责注释与参数校验逻辑
+- [X] T057 [P] [US1] 在 `frontend/src/services/studentApi.ts` 明确 `createStudent` 与 `listStudents` 调用契约，补充接口边界注释
+- [X] T058 [Polish] 在 `specs/001-student-score-management/design.md` 与 `specs/002-add-student-score-entry/design.md` 同步接口拆分验证记录
