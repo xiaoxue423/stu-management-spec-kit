@@ -47,9 +47,9 @@
 
 ## 阶段 3: 用户故事 1 - 新建学生与成绩记录（优先级: P1）🎯 MVP
 
-**目标**: 在列表页通过“新建”弹窗完成学生与单月单科成绩录入，并可刷新看到新增结果。
+**目标**: 在列表页通过“新建”弹窗完成学生创建（姓名+性别），并可在后续编辑时补录成绩。
 
-**独立测试**: 点击“新建”→填写姓名/学号/分数并选择性别/月/科目→提交后列表出现新增项；非法输入被拦截提示。
+**独立测试**: 点击“新建”→仅填写姓名并选择性别→提交后列表出现新增项与系统生成学号；后续编辑可补录成绩。
 
 ### 用户故事 1 的测试（先写并确保失败）⚠️
 
@@ -242,3 +242,16 @@ graph LR
 - [X] T046 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 移除新建态学号输入项（编辑态仅回显不可编辑）
 - [X] T047 [US1] 在 `frontend/tests/unit/student_form_validation.test.tsx` 移除“学号必填”断言并新增“新建无学号输入”断言
 - [X] T048 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 补充学号自动生成与上限场景验证步骤
+
+---
+
+## 阶段 8: 新建成绩可空增量（2026-04-01变更）
+
+**目的**: 落实“新建仅姓名+性别必填，成绩可后续编辑补录”的新需求。
+
+- [ ] T049 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增“新建不带成绩也可成功创建”测试
+- [ ] T050 [US1] 在 `frontend/tests/integration/student_create_flow.test.tsx` 新增“create 仅调用创建学生接口、不强制 upsert 成绩”测试
+- [ ] T051 [US1] 在 `frontend/src/components/studentFormUtils.ts` 区分 create/edit 校验策略（create 不校验成绩，edit 校验成绩）
+- [ ] T052 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 调整 create 提交流程（成绩为空时跳过 upsertScore）
+- [ ] T053 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 调整 edit 回显与提交逻辑（无历史成绩可直接补录）
+- [ ] T054 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 增补“新建空成绩 + 编辑补录”手工验证步骤
