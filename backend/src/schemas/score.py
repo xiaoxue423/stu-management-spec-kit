@@ -15,6 +15,8 @@ class UpsertScoreRequest:
     def validate(self) -> None:
         if self.month < 1 or self.month > 12:
             raise ValueError("month must be between 1 and 12")
+        if not isinstance(self.subject, Subject):
+            raise ValueError("subject must be one of: math,chinese,english")
         if self.score < Decimal("0") or self.score > Decimal("100"):
             raise ValueError("score must be between 0 and 100")
         if self.score.quantize(Decimal("0.01")) != self.score:

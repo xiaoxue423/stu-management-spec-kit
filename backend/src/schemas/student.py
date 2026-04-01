@@ -17,6 +17,8 @@ class CreateStudentRequest:
             raise ValueError("student_no is required")
         if not self.name.strip():
             raise ValueError("name is required")
+        if not isinstance(self.gender, Gender):
+            raise ValueError("gender must be one of: male,female")
 
 
 @dataclass_with_slots
@@ -31,6 +33,8 @@ class UpdateStudentRequest:
             raise ValueError("student_no is required")
         if not self.name.strip():
             raise ValueError("name is required")
+        if not isinstance(self.gender, Gender):
+            raise ValueError("gender must be one of: male,female")
 
 
 @dataclass_with_slots

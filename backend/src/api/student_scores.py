@@ -39,6 +39,10 @@ def _raise_http(exc: DomainError) -> None:
     raise HTTPException(status_code=exc.status_code, detail={"code": exc.error_code, "message": exc.message})
 
 
+def _raise_unknown() -> None:
+    raise HTTPException(status_code=500, detail={"code": "UNKNOWN_ERROR", "message": "internal server error"})
+
+
 @router.post("")
 def create_student(body: CreateStudentBody) -> dict:
     try:
@@ -48,6 +52,8 @@ def create_student(body: CreateStudentBody) -> dict:
         return {"data": StudentResponse.from_model(student)}
     except DomainError as exc:
         _raise_http(exc)
+    except Exception:
+        _raise_unknown()
 
 
 @router.get("")
@@ -57,6 +63,8 @@ def list_students() -> dict:
         return {"data": [StudentResponse.from_model(s) for s in students]}
     except DomainError as exc:
         _raise_http(exc)
+    except Exception:
+        _raise_unknown()
 
 
 @router.put("/{student_id}")
@@ -74,6 +82,8 @@ def update_student(student_id: int, body: UpdateStudentBody) -> dict:
         return {"data": StudentResponse.from_model(student)}
     except DomainError as exc:
         _raise_http(exc)
+    except Exception:
+        _raise_unknown()
 
 
 @router.post("/{student_id}/scores")
@@ -85,6 +95,8 @@ def upsert_score(student_id: int, body: UpsertScoreBody) -> dict:
         return {"data": ScoreResponse.from_model(score)}
     except DomainError as exc:
         _raise_http(exc)
+    except Exception:
+        _raise_unknown()
 
 
 @router.get("/{student_id}/edit-form")
@@ -99,3 +111,5 @@ def get_edit_form(student_id: int) -> dict:
         }
     except DomainError as exc:
         _raise_http(exc)
+    except Exception:
+        _raise_unknown()

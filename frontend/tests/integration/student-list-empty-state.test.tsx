@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { toGenderLabel } from "../../src/types/student";
 
 describe("student list empty state", () => {
-  it("has a placeholder for empty state assertion", () => {
-    expect([]).toHaveLength(0);
+  it("keeps Chinese gender mapping usable for empty/list rendering", () => {
+    expect(toGenderLabel("male")).toBe("男");
+    expect(toGenderLabel("female")).toBe("女");
   });
 });

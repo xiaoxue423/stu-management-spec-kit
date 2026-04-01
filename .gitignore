@@ -17,6 +17,9 @@ __pycache__/
 venv/
 *.egg-info/
 backend/.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Common
 .DS_Store
@@ -25,3 +28,4 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+coverage/

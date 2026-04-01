@@ -4,7 +4,7 @@ import type { ColumnsType } from "antd/es/table";
 import { FeedbackState } from "../components/common/FeedbackState";
 import { StudentFormModal } from "../components/StudentFormModal";
 import { listStudents } from "../services/studentApi";
-import type { StudentView } from "../types/student";
+import { toGenderLabel, type StudentView } from "../types/student";
 
 export function StudentListPage() {
   const [open, setOpen] = useState(false);
@@ -30,6 +30,7 @@ export function StudentListPage() {
       title: "性别",
       dataIndex: "gender",
       key: "gender",
+      render: (value: StudentView["gender"]) => toGenderLabel(value),
     },
     {
       title: "操作",

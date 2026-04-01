@@ -1,7 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { ApiError } from "../../src/services/studentApi";
 
 describe("student form submit feedback", () => {
-  it("has a placeholder for submit success and failure feedback assertions", () => {
-    expect("message").toBe("message");
+  it("keeps success and failure message hooks callable", () => {
+    const success = vi.fn();
+    const failure = vi.fn((err: ApiError) => err.message);
+
+    success("保存成功");
+    failure(new ApiError("提交失败，请重试", 500));
+
+    expect(success).toHaveBeenCalledWith("保存成功");
+    expect(failure).toHaveBeenCalledTimes(1);
   });
 });

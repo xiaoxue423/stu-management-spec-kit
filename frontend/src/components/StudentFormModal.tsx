@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Form, Input, Modal, Select, Space } from "antd";
 import { createStudent, getEditForm, updateStudent, upsertScore } from "../services/studentApi";
-import { GENDER_OPTIONS } from "../types/student";
+import { GENDER_LABELS, GENDER_OPTIONS, Subject } from "../types/student";
 import { ScoreFieldGroup } from "./ScoreFieldGroup";
+import {
+  StudentFormDraft,
+  isStudentFormChanged,
+  validateStudentFormInput,
+} from "./studentFormUtils";
 
 type Mode = "create" | "edit";
 
@@ -25,6 +30,7 @@ export function StudentFormModal(props: Props) {
   const [updatedAt, setUpdatedAt] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [initialDraft, setInitialDraft] = useState<StudentFormDraft | null>(null);
 
   const scoreNumber = useMemo(() => Number(score), [score]);
 
@@ -32,6 +38,17 @@ export function StudentFormModal(props: Props) {
     if (!props.open) {
       form.resetFields();
       setError("");
+      setInitialDraft(null);
+      return;
+    }
+    if (props.mode === "create") {
+      setName("");
+      setStudentNo("");
+      setGender("male");
+      setMonth(1);
+      setSubject("math");
+      setScore("");
+      setUpdatedAt("");
       return;
     }
     if (!props.open || props.mode !== "edit" || !props.studentId) return;
@@ -43,9 +60,26 @@ export function StudentFormModal(props: Props) {
         setUpdatedAt(data.student.updated_at);
         if (data.scores[0]) {
           setMonth(data.scores[0].month);
-          setSubject(data.scores[0].subject);
+          setSubject(data.scores[0].subject as Subject);
           setScore(data.scores[0].score);
+          setInitialDraft({
+            name: data.student.name,
+            studentNo: data.student.student_no,
+            gender: data.student.gender,
+            month: data.scores[0].month,
+            subject: data.scores[0].subject,
+            score: data.scores[0].score,
+          });
+          return;
         }
+        setInitialDraft({
+          name: data.student.name,
+          studentNo: data.student.student_no,
+          gender: data.student.gender,
+          month: 1,
+          subject: "math",
+          score: "",
+        });
       })
       .catch(() => setError("加载回显数据失败"));
   }, [form, props.open, props.mode, props.studentId]);
@@ -53,16 +87,21 @@ export function StudentFormModal(props: Props) {
   if (!props.open) return null;
 
   async function submit() {
-    if (!name.trim() || !studentNo.trim()) {
-      setError("姓名和学号必填");
+    const draft: StudentFormDraft = {
+      name,
+      studentNo,
+      gender,
+      month,
+      subject: subject as Subject,
+      score,
+    };
+    const validationMessage = validateStudentFormInput(draft);
+    if (validationMessage) {
+      setError(validationMessage);
       return;
     }
-    if (!Number.isFinite(scoreNumber) || scoreNumber < 0 || scoreNumber > 100) {
-      setError("分数必须在 0-100 范围内");
-      return;
-    }
-    if (!/^\d+(\.\d{1,2})?$/.test(score)) {
-      setError("分数最多支持 2 位小数");
+    if (props.mode === "edit" && !isStudentFormChanged(initialDraft, draft)) {
+      setError("未检测到变更");
       return;
     }
     setError("");
@@ -100,7 +139,7 @@ export function StudentFormModal(props: Props) {
         <Form.Item label="性别" required>
           <Select
             value={gender}
-            options={GENDER_OPTIONS.map((item) => ({ value: item, label: item }))}
+            options={GENDER_OPTIONS.map((item) => ({ value: item, label: GENDER_LABELS[item] }))}
             onChange={(value) => setGender(value)}
           />
         </Form.Item>

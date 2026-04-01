@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from backend.src.api.student_scores import router as student_router
 
@@ -14,6 +16,20 @@ app.add_middleware(
 )
 
 app.include_router(student_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def handle_request_validation_error(_, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": {
+                "code": "VALIDATION_ERROR",
+                "message": "invalid request parameters",
+                "errors": exc.errors(),
+            }
+        },
+    )
 
 
 @app.get("/health")

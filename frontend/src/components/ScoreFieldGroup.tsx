@@ -1,5 +1,5 @@
 import { Input, Select, Space } from "antd";
-import { MONTH_OPTIONS, SUBJECT_OPTIONS } from "../types/student";
+import { MONTH_OPTIONS, SUBJECT_LABELS, SUBJECT_OPTIONS } from "../types/student";
 
 interface Props {
   month: number;
@@ -21,7 +21,7 @@ export function ScoreFieldGroup(props: Props) {
       />
       <Select
         value={props.subject}
-        options={SUBJECT_OPTIONS.map((subject) => ({ value: subject, label: subject }))}
+        options={SUBJECT_OPTIONS.map((subject) => ({ value: subject, label: SUBJECT_LABELS[subject] }))}
         onChange={props.onSubjectChange}
         style={{ width: 140 }}
       />

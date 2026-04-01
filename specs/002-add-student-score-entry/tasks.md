@@ -21,10 +21,10 @@
 
 **目的**: 搭建实现本功能的最小共享骨架。
 
-- [ ] T001 [P] [Setup] 在 `backend/main.py` 注册 FastAPI 应用、CORS 和学生路由
-- [ ] T002 [P] [Setup] 在 `backend/src/api/student_scores.py` 建立学生成绩路由骨架（含 `/api/v1/students` 前缀）
-- [ ] T003 [P] [Setup] 在 `frontend/src/services/studentApi.ts` 建立 API 客户端骨架（list/create/update/upsert/getEditForm）
-- [ ] T004 [P] [Setup] 在 `frontend/src/types/student.ts` 定义 DTO、枚举常量及展示映射类型
+- [X] T001 [P] [Setup] 在 `backend/main.py` 注册 FastAPI 应用、CORS 和学生路由
+- [X] T002 [P] [Setup] 在 `backend/src/api/student_scores.py` 建立学生成绩路由骨架（含 `/api/v1/students` 前缀）
+- [X] T003 [P] [Setup] 在 `frontend/src/services/studentApi.ts` 建立 API 客户端骨架（list/create/update/upsert/getEditForm）
+- [X] T004 [P] [Setup] 在 `frontend/src/types/student.ts` 定义 DTO、枚举常量及展示映射类型
 
 ---
 
@@ -34,12 +34,12 @@
 
 **⚠️ 关键**: 本阶段完成前，不进入任何用户故事实现。
 
-- [ ] T005 [Foundational] 在 `backend/src/models/student.py` 定义 `Student` 与 `student_no` 唯一约束语义
-- [ ] T006 [Foundational] 在 `backend/src/models/exam_score.py` 定义 `ExamScore` 与 `(student_id, month, subject)` 唯一键语义
-- [ ] T007 [P] [Foundational] 在 `backend/src/schemas/student.py` 定义创建/更新请求与响应模型（含学号字段校验）
-- [ ] T008 [P] [Foundational] 在 `backend/src/schemas/score.py` 定义成绩请求与响应模型（0-100、最多2位小数）
-- [ ] T009 [Foundational] 在 `backend/src/services/student_score_service.py` 建立领域错误类型与 400/404/409/500 映射
-- [ ] T010 [Foundational] 在 `backend/src/api/student_scores.py` 统一接入参数错误/冲突/未找到/未知错误的 HTTP 映射
+- [X] T005 [Foundational] 在 `backend/src/models/student.py` 定义 `Student` 与 `student_no` 唯一约束语义
+- [X] T006 [Foundational] 在 `backend/src/models/exam_score.py` 定义 `ExamScore` 与 `(student_id, month, subject)` 唯一键语义
+- [X] T007 [P] [Foundational] 在 `backend/src/schemas/student.py` 定义创建/更新请求与响应模型（含学号字段校验）
+- [X] T008 [P] [Foundational] 在 `backend/src/schemas/score.py` 定义成绩请求与响应模型（0-100、最多2位小数）
+- [X] T009 [Foundational] 在 `backend/src/services/student_score_service.py` 建立领域错误类型与 400/404/409/500 映射
+- [X] T010 [Foundational] 在 `backend/src/api/student_scores.py` 统一接入参数错误/冲突/未找到/未知错误的 HTTP 映射
 
 **检查点**: 模型、Schema、服务错误映射就绪，可以开始用户故事开发。
 
@@ -53,21 +53,21 @@
 
 ### 用户故事 1 的测试（先写并确保失败）⚠️
 
-- [ ] T011 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 编写 `POST /api/v1/students` 合约测试（成功、学号重复409、必填缺失400）
-- [ ] T012 [P] [US1] 在 `backend/tests/contract/test_upsert_score_api.py` 编写 `POST /api/v1/students/{studentId}/scores` 合约测试（成功、范围/精度400）
-- [ ] T013 [P] [US1] 在 `backend/tests/contract/test_list_students_api.py` 编写 `GET /api/v1/students` 合约测试（空列表、创建后可见）
-- [ ] T014 [P] [US1] 在 `frontend/tests/integration/student_create_flow.test.tsx` 编写新建流程测试（成功关闭弹窗并刷新）
-- [ ] T015 [P] [US1] 在 `frontend/tests/unit/student_form_validation.test.tsx` 编写表单校验测试（必填、范围、2位小数）
+- [X] T011 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 编写 `POST /api/v1/students` 合约测试（成功、学号重复409、必填缺失400）
+- [X] T012 [P] [US1] 在 `backend/tests/contract/test_upsert_score_api.py` 编写 `POST /api/v1/students/{studentId}/scores` 合约测试（成功、范围/精度400）
+- [X] T013 [P] [US1] 在 `backend/tests/contract/test_list_students_api.py` 编写 `GET /api/v1/students` 合约测试（空列表、创建后可见）
+- [X] T014 [P] [US1] 在 `frontend/tests/integration/student_create_flow.test.tsx` 编写新建流程测试（成功关闭弹窗并刷新）
+- [X] T015 [P] [US1] 在 `frontend/tests/unit/student_form_validation.test.tsx` 编写表单校验测试（必填、范围、2位小数）
 
 ### 用户故事 1 的实现
 
-- [ ] T016 [US1] 在 `backend/src/services/student_score_service.py` 实现 `create_student`（学号唯一校验 + 创建）
-- [ ] T017 [US1] 在 `backend/src/services/student_score_service.py` 实现 `upsert_score`（month/subject/score 校验 + upsert）
-- [ ] T018 [US1] 在 `backend/src/services/student_score_service.py` 实现 `list_students`（按 id 升序返回）
-- [ ] T019 [US1] 在 `backend/src/api/student_scores.py` 实现 `POST /students`、`POST /students/{id}/scores`、`GET /students`
-- [ ] T020 [US1] 在 `frontend/src/components/ScoreFieldGroup.tsx` 实现月份/科目受限选择与分数输入
-- [ ] T021 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 实现 create 提交链路与表单级错误反馈
-- [ ] T022 [US1] 在 `frontend/src/pages/StudentListPage.tsx` 接入新建入口、列表加载与提交后刷新
+- [X] T016 [US1] 在 `backend/src/services/student_score_service.py` 实现 `create_student`（学号唯一校验 + 创建）
+- [X] T017 [US1] 在 `backend/src/services/student_score_service.py` 实现 `upsert_score`（month/subject/score 校验 + upsert）
+- [X] T018 [US1] 在 `backend/src/services/student_score_service.py` 实现 `list_students`（按 id 升序返回）
+- [X] T019 [US1] 在 `backend/src/api/student_scores.py` 实现 `POST /students`、`POST /students/{id}/scores`、`GET /students`
+- [X] T020 [US1] 在 `frontend/src/components/ScoreFieldGroup.tsx` 实现月份/科目受限选择与分数输入
+- [X] T021 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 实现 create 提交链路与表单级错误反馈
+- [X] T022 [US1] 在 `frontend/src/pages/StudentListPage.tsx` 接入新建入口、列表加载与提交后刷新
 
 **检查点**: US1 可独立运行，满足 MVP（有录入入口、可保存、可查看、基础校验完整）。
 
@@ -81,18 +81,18 @@
 
 ### 用户故事 2 的测试（先写并确保失败）⚠️
 
-- [ ] T023 [P] [US2] 在 `backend/tests/contract/test_update_student_api.py` 编写 `PUT /api/v1/students/{studentId}` 合约测试（成功、版本冲突409、学号冲突409）
-- [ ] T024 [P] [US2] 在 `backend/tests/contract/test_edit_form_api.py` 编写 `GET /api/v1/students/{studentId}/edit-form` 合约测试（成功、不存在404）
-- [ ] T025 [P] [US2] 在 `frontend/tests/integration/student_edit_flow.test.tsx` 编写编辑流程集成测试（回显、修改、保存）
-- [ ] T026 [P] [US2] 在 `frontend/tests/unit/student_no_change_submit.test.tsx` 编写无变更提交测试（阻止请求并提示）
+- [X] T023 [P] [US2] 在 `backend/tests/contract/test_update_student_api.py` 编写 `PUT /api/v1/students/{studentId}` 合约测试（成功、版本冲突409、学号冲突409）
+- [X] T024 [P] [US2] 在 `backend/tests/contract/test_edit_form_api.py` 编写 `GET /api/v1/students/{studentId}/edit-form` 合约测试（成功、不存在404）
+- [X] T025 [P] [US2] 在 `frontend/tests/integration/student_edit_flow.test.tsx` 编写编辑流程集成测试（回显、修改、保存）
+- [X] T026 [P] [US2] 在 `frontend/tests/unit/student_no_change_submit.test.tsx` 编写无变更提交测试（阻止请求并提示）
 
 ### 用户故事 2 的实现
 
-- [ ] T027 [US2] 在 `backend/src/services/student_score_service.py` 实现 `update_student`（版本校验、冲突映射、字段更新）
-- [ ] T028 [US2] 在 `backend/src/services/student_score_service.py` 实现 `get_edit_form`（学生+成绩集合聚合）
-- [ ] T029 [US2] 在 `backend/src/api/student_scores.py` 实现 `PUT /students/{id}` 与 `GET /students/{id}/edit-form`
-- [ ] T030 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 实现 edit 初始化回显、部分更新提交流程
-- [ ] T031 [US2] 在 `frontend/src/pages/StudentListPage.tsx` 接入编辑按钮、保存后刷新与失败提示
+- [X] T027 [US2] 在 `backend/src/services/student_score_service.py` 实现 `update_student`（版本校验、冲突映射、字段更新）
+- [X] T028 [US2] 在 `backend/src/services/student_score_service.py` 实现 `get_edit_form`（学生+成绩集合聚合）
+- [X] T029 [US2] 在 `backend/src/api/student_scores.py` 实现 `PUT /students/{id}` 与 `GET /students/{id}/edit-form`
+- [X] T030 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 实现 edit 初始化回显、部分更新提交流程
+- [X] T031 [US2] 在 `frontend/src/pages/StudentListPage.tsx` 接入编辑按钮、保存后刷新与失败提示
 
 **检查点**: US2 可独立验证，形成“回显 + 修改 + 保存”闭环。
 
@@ -106,14 +106,14 @@
 
 ### 用户故事 3 的测试（先写并确保失败）⚠️
 
-- [ ] T032 [P] [US3] 在 `backend/tests/unit/test_enum_validation.py` 编写枚举边界单测（gender/month/subject 非法值）
-- [ ] T033 [P] [US3] 在 `frontend/tests/unit/enum_options_guard.test.tsx` 编写受限选项与中文性别文案测试
+- [X] T032 [P] [US3] 在 `backend/tests/unit/test_enum_validation.py` 编写枚举边界单测（gender/month/subject 非法值）
+- [X] T033 [P] [US3] 在 `frontend/tests/unit/enum_options_guard.test.tsx` 编写受限选项与中文性别文案测试
 
 ### 用户故事 3 的实现
 
-- [ ] T034 [US3] 在 `backend/src/schemas/student.py` 与 `backend/src/schemas/score.py` 收敛枚举校验与错误消息格式
-- [ ] T035 [US3] 在 `frontend/src/types/student.ts` 增加性别值与中文文案映射（仅展示“男/女”）
-- [ ] T036 [US3] 在 `frontend/src/components/StudentFormModal.tsx` 与 `frontend/src/components/ScoreFieldGroup.tsx` 强化非法值拦截与受限渲染
+- [X] T034 [US3] 在 `backend/src/schemas/student.py` 与 `backend/src/schemas/score.py` 收敛枚举校验与错误消息格式
+- [X] T035 [US3] 在 `frontend/src/types/student.ts` 增加性别值与中文文案映射（仅展示“男/女”）
+- [X] T036 [US3] 在 `frontend/src/components/StudentFormModal.tsx` 与 `frontend/src/components/ScoreFieldGroup.tsx` 强化非法值拦截与受限渲染
 
 **检查点**: US3 可独立验证，前后端约束一致且性别展示满足中文化要求。
 
@@ -123,10 +123,10 @@
 
 **目的**: 完成功能收尾、回归、文档与性能验证。
 
-- [ ] T037 [P] [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 更新手工验证步骤（新建/编辑/中文性别/边界）
-- [ ] T038 [Polish] 在 `frontend/tests/integration/student-list-empty-state.test.tsx` 与 `student-list-error-retry.test.tsx` 完善空态与重试回归
-- [ ] T039 [Polish] 在 `frontend/tests/integration/student-form-submit-feedback.test.tsx` 完善提交流程成功/失败反馈回归
-- [ ] T040 [Polish] 在 `specs/002-add-student-score-entry/design.md` 与 `spec.md` 记录性能验证与范围守卫检查结果
+- [X] T037 [P] [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 更新手工验证步骤（新建/编辑/中文性别/边界）
+- [X] T038 [Polish] 在 `frontend/tests/integration/student-list-empty-state.test.tsx` 与 `student-list-error-retry.test.tsx` 完善空态与重试回归
+- [X] T039 [Polish] 在 `frontend/tests/integration/student-form-submit-feedback.test.tsx` 完善提交流程成功/失败反馈回归
+- [X] T040 [Polish] 在 `specs/002-add-student-score-entry/design.md` 与 `spec.md` 记录性能验证与范围守卫检查结果
 
 ---
 
