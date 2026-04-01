@@ -255,3 +255,14 @@ graph LR
 - [X] T052 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 调整 create 提交流程（成绩为空时跳过 upsertScore）
 - [X] T053 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 调整 edit 回显与提交逻辑（无历史成绩可直接补录）
 - [X] T054 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 增补“新建空成绩 + 编辑补录”手工验证步骤
+
+---
+
+## 阶段 9: 创建/查询接口拆分增量（2026-04-01变更）
+
+**目的**: 落实“创建学生接口”与“学生列表查询接口”职责拆分并形成可回归验证。
+
+- [ ] T055 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 与 `test_list_students_api.py` 增加接口职责边界断言（写入/查询分离）
+- [ ] T056 [US1] 在 `backend/src/api/student_scores.py` 分离创建与列表控制器职责注释与参数校验逻辑
+- [ ] T057 [P] [US1] 在 `frontend/src/services/studentApi.ts` 明确 `createStudent` 与 `listStudents` 调用契约，补充接口边界注释
+- [ ] T058 [Polish] 在 `specs/001-student-score-management/design.md` 与 `specs/002-add-student-score-entry/design.md` 同步接口拆分验证记录
