@@ -234,11 +234,11 @@ graph LR
 
 **目的**: 落实“新建时学号后端自动生成（0001-9999）”的新需求，不新增新目录。
 
-- [ ] T041 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增学号自动生成与顺序递增测试（0001、0002）
-- [ ] T042 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增学号上限 9999 溢出测试（返回业务错误）
-- [ ] T043 [US1] 在 `backend/src/services/student_score_service.py` 移除 create 输入学号依赖并实现自动编号生成器
-- [ ] T044 [US1] 在 `backend/src/schemas/student.py` 调整创建请求模型（去除 `student_no` 入参）与错误消息
-- [ ] T045 [US1] 在 `backend/src/api/student_scores.py` 调整创建接口入参（仅姓名/性别）并保持返回学号
-- [ ] T046 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 移除新建态学号输入项（编辑态仅回显不可编辑）
-- [ ] T047 [US1] 在 `frontend/tests/unit/student_form_validation.test.tsx` 移除“学号必填”断言并新增“新建无学号输入”断言
-- [ ] T048 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 补充学号自动生成与上限场景验证步骤
+- [X] T041 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增学号自动生成与顺序递增测试（0001、0002）
+- [X] T042 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增学号上限 9999 溢出测试（返回业务错误）
+- [X] T043 [US1] 在 `backend/src/services/student_score_service.py` 移除 create 输入学号依赖并实现自动编号生成器
+- [X] T044 [US1] 在 `backend/src/schemas/student.py` 调整创建请求模型（去除 `student_no` 入参）与错误消息
+- [X] T045 [US1] 在 `backend/src/api/student_scores.py` 调整创建接口入参（仅姓名/性别）并保持返回学号
+- [X] T046 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 移除新建态学号输入项（编辑态仅回显不可编辑）
+- [X] T047 [US1] 在 `frontend/tests/unit/student_form_validation.test.tsx` 移除“学号必填”断言并新增“新建无学号输入”断言
+- [X] T048 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 补充学号自动生成与上限场景验证步骤

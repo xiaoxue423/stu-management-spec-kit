@@ -8,13 +8,10 @@ from backend.src.models.student import Gender, Student
 
 @dataclass_with_slots
 class CreateStudentRequest:
-    student_no: str
     name: str
     gender: Gender
 
     def validate(self) -> None:
-        if not self.student_no.strip():
-            raise ValueError("student_no is required")
         if not self.name.strip():
             raise ValueError("name is required")
         if not isinstance(self.gender, Gender):
@@ -23,14 +20,11 @@ class CreateStudentRequest:
 
 @dataclass_with_slots
 class UpdateStudentRequest:
-    student_no: str
     name: str
     gender: Gender
     updated_at: datetime
 
     def validate(self) -> None:
-        if not self.student_no.strip():
-            raise ValueError("student_no is required")
         if not self.name.strip():
             raise ValueError("name is required")
         if not isinstance(self.gender, Gender):

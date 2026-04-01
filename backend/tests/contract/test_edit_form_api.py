@@ -19,7 +19,7 @@ def test_get_edit_form_not_found() -> None:
 def test_get_edit_form_success() -> None:
     created = client.post(
         "/api/v1/students",
-        json={"studentNo": "S001", "name": "张三", "gender": "male"},
+        json={"name": "张三", "gender": "male"},
     ).json()["data"]
     client.post(
         f"/api/v1/students/{created['id']}/scores",

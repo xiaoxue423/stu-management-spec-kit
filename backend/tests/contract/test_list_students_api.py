@@ -20,7 +20,7 @@ def test_list_students_empty() -> None:
 def test_list_students_after_create() -> None:
     client.post(
         "/api/v1/students",
-        json={"studentNo": "S001", "name": "张三", "gender": "male"},
+        json={"name": "张三", "gender": "male"},
     )
 
     response = client.get("/api/v1/students")

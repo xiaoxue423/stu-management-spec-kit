@@ -9,7 +9,7 @@ from backend.src.schemas.student import CreateStudentRequest
 
 
 def test_invalid_gender_rejected() -> None:
-    req = CreateStudentRequest(student_no="S001", name="张三", gender="unknown")  # type: ignore[arg-type]
+    req = CreateStudentRequest(name="张三", gender="unknown")  # type: ignore[arg-type]
     with pytest.raises(ValueError):
         req.validate()
 
@@ -27,5 +27,5 @@ def test_invalid_subject_rejected() -> None:
 
 
 def test_valid_enum_values_pass() -> None:
-    req = CreateStudentRequest(student_no="S001", name="张三", gender=Gender.MALE)
+    req = CreateStudentRequest(name="张三", gender=Gender.MALE)
     req.validate()

@@ -17,13 +17,11 @@ service = StudentScoreService()
 
 
 class CreateStudentBody(BaseModel):
-    studentNo: str
     name: str
     gender: Gender
 
 
 class UpdateStudentBody(BaseModel):
-    studentNo: str
     name: str
     gender: Gender
     updatedAt: datetime
@@ -46,9 +44,7 @@ def _raise_unknown() -> None:
 @router.post("")
 def create_student(body: CreateStudentBody) -> dict:
     try:
-        student = service.create_student(
-            CreateStudentRequest(student_no=body.studentNo, name=body.name, gender=body.gender)
-        )
+        student = service.create_student(CreateStudentRequest(name=body.name, gender=body.gender))
         return {"data": StudentResponse.from_model(student)}
     except DomainError as exc:
         _raise_http(exc)
@@ -73,7 +69,6 @@ def update_student(student_id: int, body: UpdateStudentBody) -> dict:
         student = service.update_student(
             student_id,
             UpdateStudentRequest(
-                student_no=body.studentNo,
                 name=body.name,
                 gender=body.gender,
                 updated_at=body.updatedAt,

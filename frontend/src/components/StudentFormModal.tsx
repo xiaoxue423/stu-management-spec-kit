@@ -95,7 +95,7 @@ export function StudentFormModal(props: Props) {
       subject: subject as Subject,
       score,
     };
-    const validationMessage = validateStudentFormInput(draft);
+    const validationMessage = validateStudentFormInput(draft, { requireStudentNo: props.mode === "edit" });
     if (validationMessage) {
       setError(validationMessage);
       return;
@@ -109,8 +109,8 @@ export function StudentFormModal(props: Props) {
       setSubmitting(true);
       const student =
         props.mode === "create"
-          ? await createStudent({ name, studentNo, gender })
-          : await updateStudent(props.studentId!, { name, studentNo, gender, updatedAt });
+          ? await createStudent({ name, gender })
+          : await updateStudent(props.studentId!, { name, gender, updatedAt });
       await upsertScore(student.id, { month, subject: subject as "math" | "chinese" | "english", score: scoreNumber });
       props.onSuccess();
       props.onClose();
@@ -133,9 +133,11 @@ export function StudentFormModal(props: Props) {
         <Form.Item label="姓名" required>
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </Form.Item>
-        <Form.Item label="学号" required>
-          <Input value={studentNo} onChange={(e) => setStudentNo(e.target.value)} />
-        </Form.Item>
+        {props.mode === "edit" ? (
+          <Form.Item label="学号">
+            <Input value={studentNo} disabled />
+          </Form.Item>
+        ) : null}
         <Form.Item label="性别" required>
           <Select
             value={gender}

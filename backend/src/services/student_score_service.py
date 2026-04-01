@@ -52,10 +52,18 @@ class StudentScoreService:
 
     def __init__(self) -> None:
         self._student_auto_id = 1
+        self._student_no_seq = 1
         self._score_auto_id = 1
         self._students_by_id: dict[int, Student] = {}
         self._student_no_to_id: dict[str, int] = {}
         self._scores_by_key: dict[tuple[int, int, str], ExamScore] = {}
+
+    def _next_student_no(self) -> str:
+        if self._student_no_seq > 9999:
+            raise ConflictError("student_no range exhausted")
+        student_no = f"{self._student_no_seq:04d}"
+        self._student_no_seq += 1
+        return student_no
 
     def create_student(self, req: CreateStudentRequest) -> Student:
         try:
@@ -63,13 +71,14 @@ class StudentScoreService:
         except ValueError as exc:
             raise ValidationError(str(exc)) from exc
 
-        if req.student_no in self._student_no_to_id:
+        student_no = self._next_student_no()
+        if student_no in self._student_no_to_id:
             raise ConflictError("student_no already exists")
 
         now = datetime.utcnow()
         student = Student(
             id=self._student_auto_id,
-            student_no=req.student_no,
+            student_no=student_no,
             name=req.name,
             gender=req.gender,
             created_at=now,
@@ -94,15 +103,6 @@ class StudentScoreService:
         if student.updated_at != req.updated_at:
             raise ConflictError("student version conflict")
 
-        exists_id = self._student_no_to_id.get(req.student_no)
-        if exists_id is not None and exists_id != student_id:
-            raise ConflictError("student_no already exists")
-
-        if student.student_no != req.student_no:
-            self._student_no_to_id.pop(student.student_no, None)
-            self._student_no_to_id[req.student_no] = student_id
-
-        student.student_no = req.student_no
         student.name = req.name
         student.gender = req.gender
         student.updated_at = datetime.utcnow()

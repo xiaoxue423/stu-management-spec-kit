@@ -11,20 +11,19 @@ def setup_function() -> None:
     api_module.service = StudentScoreService()
 
 
-def _create(student_no: str) -> dict:
+def _create() -> dict:
     response = client.post(
         "/api/v1/students",
-        json={"studentNo": student_no, "name": "张三", "gender": "male"},
+        json={"name": "张三", "gender": "male"},
     )
     return response.json()["data"]
 
 
 def test_update_student_success() -> None:
-    student = _create("S001")
+    student = _create()
     response = client.put(
         f"/api/v1/students/{student['id']}",
         json={
-            "studentNo": "S001",
             "name": "李四",
             "gender": "female",
             "updatedAt": student["updated_at"],
@@ -35,11 +34,10 @@ def test_update_student_success() -> None:
 
 
 def test_update_student_version_conflict_returns_409() -> None:
-    student = _create("S001")
+    student = _create()
     response = client.put(
         f"/api/v1/students/{student['id']}",
         json={
-            "studentNo": "S001",
             "name": "李四",
             "gender": "female",
             "updatedAt": "2000-01-01T00:00:00",
@@ -48,16 +46,15 @@ def test_update_student_version_conflict_returns_409() -> None:
     assert response.status_code == 409
 
 
-def test_update_student_no_conflict_returns_409() -> None:
-    first = _create("S001")
-    _create("S002")
+def test_update_student_keeps_student_no_unchanged() -> None:
+    first = _create()
     response = client.put(
         f"/api/v1/students/{first['id']}",
         json={
-            "studentNo": "S002",
             "name": "李四",
             "gender": "female",
             "updatedAt": first["updated_at"],
         },
     )
-    assert response.status_code == 409
+    assert response.status_code == 200
+    assert response.json()["data"]["student_no"] == first["student_no"]

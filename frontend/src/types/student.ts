@@ -41,12 +41,13 @@ export interface ScoreDto {
 }
 
 export interface CreateStudentPayload {
-  studentNo: string;
   name: string;
   gender: Gender;
 }
 
-export interface UpdateStudentPayload extends CreateStudentPayload {
+export interface UpdateStudentPayload {
+  name: string;
+  gender: Gender;
   updatedAt: string;
 }
 

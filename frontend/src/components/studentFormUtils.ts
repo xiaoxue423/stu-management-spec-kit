@@ -2,16 +2,19 @@ import type { Gender, Subject } from "../types/student";
 
 export interface StudentFormDraft {
   name: string;
-  studentNo: string;
+  studentNo?: string;
   gender: Gender;
   month: number;
   subject: Subject;
   score: string;
 }
 
-export function validateStudentFormInput(draft: StudentFormDraft): string | null {
-  if (!draft.name.trim() || !draft.studentNo.trim()) {
-    return "姓名和学号必填";
+export function validateStudentFormInput(draft: StudentFormDraft, options?: { requireStudentNo?: boolean }): string | null {
+  if (!draft.name.trim()) {
+    return "姓名必填";
+  }
+  if (options?.requireStudentNo && !draft.studentNo?.trim()) {
+    return "学号必填";
   }
 
   const scoreNumber = Number(draft.score);

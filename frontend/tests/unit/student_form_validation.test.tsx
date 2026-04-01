@@ -6,19 +6,17 @@ describe("student form validation", () => {
   it("rejects required fields", () => {
     const result = validateStudentFormInput({
       name: "",
-      studentNo: "",
       gender: "male",
       month: 1,
       subject: "math",
       score: "90",
     });
-    expect(result).toBe("姓名和学号必填");
+    expect(result).toBe("姓名必填");
   });
 
   it("rejects score out of range", () => {
     const result = validateStudentFormInput({
       name: "张三",
-      studentNo: "S001",
       gender: "male",
       month: 1,
       subject: "math",
@@ -30,7 +28,6 @@ describe("student form validation", () => {
   it("rejects score precision over 2 decimals", () => {
     const result = validateStudentFormInput({
       name: "张三",
-      studentNo: "S001",
       gender: "male",
       month: 1,
       subject: "math",
@@ -42,12 +39,26 @@ describe("student form validation", () => {
   it("accepts valid payload", () => {
     const result = validateStudentFormInput({
       name: "张三",
-      studentNo: "S001",
       gender: "male",
       month: 1,
       subject: "math",
       score: "88.88",
     });
     expect(result).toBeNull();
+  });
+
+  it("rejects missing studentNo in edit mode only", () => {
+    const result = validateStudentFormInput(
+      {
+        name: "张三",
+        studentNo: "",
+        gender: "male",
+        month: 1,
+        subject: "math",
+        score: "88.88",
+      },
+      { requireStudentNo: true }
+    );
+    expect(result).toBe("学号必填");
   });
 });

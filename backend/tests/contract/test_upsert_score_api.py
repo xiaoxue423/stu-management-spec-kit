@@ -14,7 +14,7 @@ def setup_function() -> None:
 def _create_student() -> int:
     response = client.post(
         "/api/v1/students",
-        json={"studentNo": "S001", "name": "张三", "gender": "male"},
+        json={"name": "张三", "gender": "male"},
     )
     return response.json()["data"]["id"]
 

@@ -14,23 +14,31 @@ def setup_function() -> None:
 def test_create_student_success() -> None:
     response = client.post(
         "/api/v1/students",
-        json={"studentNo": "S001", "name": "张三", "gender": "male"},
+        json={"name": "张三", "gender": "male"},
     )
     assert response.status_code == 200
     body = response.json()["data"]
-    assert body["student_no"] == "S001"
+    assert body["student_no"] == "0001"
     assert body["name"] == "张三"
 
 
-def test_create_student_duplicate_student_no_returns_409() -> None:
-    payload = {"studentNo": "S001", "name": "张三", "gender": "male"}
-    client.post("/api/v1/students", json=payload)
+def test_create_student_auto_number_increments() -> None:
+    first = client.post("/api/v1/students", json={"name": "张三", "gender": "male"})
+    second = client.post("/api/v1/students", json={"name": "李四", "gender": "female"})
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert first.json()["data"]["student_no"] == "0001"
+    assert second.json()["data"]["student_no"] == "0002"
 
-    response = client.post("/api/v1/students", json=payload)
+
+def test_create_student_exhausted_student_no_returns_409() -> None:
+    # 覆盖上限场景，避免循环创建 9999 条测试数据。
+    api_module.service._student_no_seq = 10000
+    response = client.post("/api/v1/students", json={"name": "张三", "gender": "male"})
     assert response.status_code == 409
     assert response.json()["detail"]["code"] == "CONFLICT"
 
 
 def test_create_student_missing_required_returns_400() -> None:
-    response = client.post("/api/v1/students", json={"studentNo": "", "gender": "male"})
+    response = client.post("/api/v1/students", json={"gender": "male"})
     assert response.status_code == 400

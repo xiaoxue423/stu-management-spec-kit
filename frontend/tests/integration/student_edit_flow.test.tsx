@@ -28,7 +28,6 @@ describe("student edit flow", () => {
 
     const editForm = await getEditForm(1);
     const updated = await updateStudent(1, {
-      studentNo: editForm.student.student_no,
       name: "李四",
       gender: "female",
       updatedAt: editForm.student.updated_at!,
