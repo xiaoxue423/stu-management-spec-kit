@@ -57,7 +57,7 @@ export function StudentFormModal(props: Props) {
         setName(data.student.name);
         setStudentNo(data.student.student_no);
         setGender(data.student.gender);
-        setUpdatedAt(data.student.updated_at);
+        setUpdatedAt(data.student.updated_at ?? "");
         if (data.scores[0]) {
           setMonth(data.scores[0].month);
           setSubject(data.scores[0].subject as Subject);
@@ -95,7 +95,10 @@ export function StudentFormModal(props: Props) {
       subject: subject as Subject,
       score,
     };
-    const validationMessage = validateStudentFormInput(draft, { requireStudentNo: props.mode === "edit" });
+    const validationMessage = validateStudentFormInput(draft, {
+      requireStudentNo: props.mode === "edit",
+      requireScore: false,
+    });
     if (validationMessage) {
       setError(validationMessage);
       return;
@@ -111,7 +114,9 @@ export function StudentFormModal(props: Props) {
         props.mode === "create"
           ? await createStudent({ name, gender })
           : await updateStudent(props.studentId!, { name, gender, updatedAt });
-      await upsertScore(student.id, { month, subject: subject as "math" | "chinese" | "english", score: scoreNumber });
+      if (score.trim()) {
+        await upsertScore(student.id, { month, subject: subject as "math" | "chinese" | "english", score: scoreNumber });
+      }
       props.onSuccess();
       props.onClose();
     } catch {

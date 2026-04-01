@@ -9,12 +9,21 @@ export interface StudentFormDraft {
   score: string;
 }
 
-export function validateStudentFormInput(draft: StudentFormDraft, options?: { requireStudentNo?: boolean }): string | null {
+export function validateStudentFormInput(
+  draft: StudentFormDraft,
+  options?: { requireStudentNo?: boolean; requireScore?: boolean }
+): string | null {
   if (!draft.name.trim()) {
     return "姓名必填";
   }
   if (options?.requireStudentNo && !draft.studentNo?.trim()) {
     return "学号必填";
+  }
+  if (!options?.requireScore && !draft.score.trim()) {
+    return null;
+  }
+  if (options?.requireScore && !draft.score.trim()) {
+    return "分数必填";
   }
 
   const scoreNumber = Number(draft.score);

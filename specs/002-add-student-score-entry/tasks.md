@@ -249,9 +249,9 @@ graph LR
 
 **目的**: 落实“新建仅姓名+性别必填，成绩可后续编辑补录”的新需求。
 
-- [ ] T049 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增“新建不带成绩也可成功创建”测试
-- [ ] T050 [US1] 在 `frontend/tests/integration/student_create_flow.test.tsx` 新增“create 仅调用创建学生接口、不强制 upsert 成绩”测试
-- [ ] T051 [US1] 在 `frontend/src/components/studentFormUtils.ts` 区分 create/edit 校验策略（create 不校验成绩，edit 校验成绩）
-- [ ] T052 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 调整 create 提交流程（成绩为空时跳过 upsertScore）
-- [ ] T053 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 调整 edit 回显与提交逻辑（无历史成绩可直接补录）
-- [ ] T054 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 增补“新建空成绩 + 编辑补录”手工验证步骤
+- [X] T049 [P] [US1] 在 `backend/tests/contract/test_create_student_api.py` 新增“新建不带成绩也可成功创建”测试
+- [X] T050 [US1] 在 `frontend/tests/integration/student_create_flow.test.tsx` 新增“create 仅调用创建学生接口、不强制 upsert 成绩”测试
+- [X] T051 [US1] 在 `frontend/src/components/studentFormUtils.ts` 区分 create/edit 校验策略（create 不校验成绩，edit 校验成绩）
+- [X] T052 [US1] 在 `frontend/src/components/StudentFormModal.tsx` 调整 create 提交流程（成绩为空时跳过 upsertScore）
+- [X] T053 [US2] 在 `frontend/src/components/StudentFormModal.tsx` 调整 edit 回显与提交逻辑（无历史成绩可直接补录）
+- [X] T054 [Polish] 在 `specs/002-add-student-score-entry/temp/quickstart.md` 增补“新建空成绩 + 编辑补录”手工验证步骤

@@ -42,3 +42,13 @@ def test_create_student_exhausted_student_no_returns_409() -> None:
 def test_create_student_missing_required_returns_400() -> None:
     response = client.post("/api/v1/students", json={"gender": "male"})
     assert response.status_code == 400
+
+
+def test_create_student_without_score_and_then_edit_form_has_empty_scores() -> None:
+    created = client.post("/api/v1/students", json={"name": "王五", "gender": "male"})
+    assert created.status_code == 200
+    student_id = created.json()["data"]["id"]
+
+    edit_form = client.get(f"/api/v1/students/{student_id}/edit-form")
+    assert edit_form.status_code == 200
+    assert edit_form.json()["data"]["scores"] == []

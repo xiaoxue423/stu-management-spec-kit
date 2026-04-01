@@ -27,4 +27,18 @@ describe("student create flow", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     fetchMock.mockRestore();
   });
+
+  it("creates student without score and skips upsert call", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ data: { id: 2, student_no: "0002", name: "李四", gender: "female" } }), {
+        status: 200,
+      })
+    );
+
+    const student = await createStudent({ name: "李四", gender: "female" });
+
+    expect(student.student_no).toBe("0002");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    fetchMock.mockRestore();
+  });
 });

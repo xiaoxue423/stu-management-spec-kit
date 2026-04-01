@@ -15,24 +15,30 @@ describe("student form validation", () => {
   });
 
   it("rejects score out of range", () => {
-    const result = validateStudentFormInput({
-      name: "张三",
-      gender: "male",
-      month: 1,
-      subject: "math",
-      score: "101",
-    });
+    const result = validateStudentFormInput(
+      {
+        name: "张三",
+        gender: "male",
+        month: 1,
+        subject: "math",
+        score: "101",
+      },
+      { requireScore: true }
+    );
     expect(result).toBe("分数必须在 0-100 范围内");
   });
 
   it("rejects score precision over 2 decimals", () => {
-    const result = validateStudentFormInput({
-      name: "张三",
-      gender: "male",
-      month: 1,
-      subject: "math",
-      score: "88.888",
-    });
+    const result = validateStudentFormInput(
+      {
+        name: "张三",
+        gender: "male",
+        month: 1,
+        subject: "math",
+        score: "88.888",
+      },
+      { requireScore: true }
+    );
     expect(result).toBe("分数最多支持 2 位小数");
   });
 
@@ -43,6 +49,17 @@ describe("student form validation", () => {
       month: 1,
       subject: "math",
       score: "88.88",
+    });
+    expect(result).toBeNull();
+  });
+
+  it("accepts empty score for create mode", () => {
+    const result = validateStudentFormInput({
+      name: "张三",
+      gender: "male",
+      month: 1,
+      subject: "math",
+      score: "",
     });
     expect(result).toBeNull();
   });
@@ -60,5 +77,20 @@ describe("student form validation", () => {
       { requireStudentNo: true }
     );
     expect(result).toBe("学号必填");
+  });
+
+  it("rejects empty score when edit requires score", () => {
+    const result = validateStudentFormInput(
+      {
+        name: "张三",
+        studentNo: "0001",
+        gender: "male",
+        month: 1,
+        subject: "math",
+        score: "",
+      },
+      { requireStudentNo: true, requireScore: true }
+    );
+    expect(result).toBe("分数必填");
   });
 });
