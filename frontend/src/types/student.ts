@@ -62,6 +62,58 @@ export interface ApiErrorShape {
   message: string;
 }
 
+/**
+ * 统一成功响应外层结构：
+ * 后端约定大多数接口都返回 { data: ... }。
+ */
+export interface ApiSuccessResponse<T> {
+  data: T;
+}
+
+/**
+ * 统一错误响应外层结构：
+ * FastAPI 在抛 HTTPException 时，错误内容放在 detail 字段。
+ */
+export interface ApiErrorResponse {
+  detail: ApiErrorShape;
+}
+
+/**
+ * GET /api/v1/students/{student_id}/edit-form 返回的数据体。
+ * 用于“编辑学生”弹窗初始化：一次拿到学生信息 + 成绩列表。
+ */
+export interface EditFormData {
+  student: StudentDto;
+  scores: ScoreDto[];
+}
+
+/**
+ * 仅用于前端联调时“看契约”更直观：
+ * 把每个接口的请求与响应类型都集中定义。
+ */
+export interface StudentApiContract {
+  listStudents: {
+    request: void;
+    response: ApiSuccessResponse<StudentDto[]>;
+  };
+  createStudent: {
+    request: CreateStudentPayload;
+    response: ApiSuccessResponse<StudentDto>;
+  };
+  updateStudent: {
+    request: { studentId: number; payload: UpdateStudentPayload };
+    response: ApiSuccessResponse<StudentDto>;
+  };
+  upsertScore: {
+    request: { studentId: number; payload: UpsertScorePayload };
+    response: ApiSuccessResponse<ScoreDto>;
+  };
+  getEditForm: {
+    request: { studentId: number };
+    response: ApiSuccessResponse<EditFormData>;
+  };
+}
+
 export function toGenderLabel(gender: Gender): string {
   return GENDER_LABELS[gender];
 }
