@@ -313,3 +313,16 @@ uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
 1. `POST /api/v1/students` 创建学生；可选 `POST .../scores` 录入成绩。  
 2. 停止并重启 uvicorn。  
 3. `GET /api/v1/students` 与 `GET /api/v1/students/{id}/edit-form` 与重启前一致。
+
+### §10 附录（运维文档索引）
+
+- 逐步排查与常见问题（推荐主文档）：`backend/docs/mysql-setup.md`
+- 双进程同库验证（US2）：`MULTI_INSTANCE_VERIFICATION.md`
+
+## 11 性能与迁移说明（NFR-004）
+
+迁库后接口路径与前端契约未变；列表与只读查询在单机联调数据量下与内存实现相比**未引入额外线性扫描以外的架构**。若后续在万级行数下感知变慢，再单独开需求优化索引或查询（当前单库单表，无读副本）。
+
+---
+
+**实施记录**：`tasks.md` 中 T001–T025 已由 `/speckit.implement` 对应落地（依赖代码与文档路径以仓库为准）。

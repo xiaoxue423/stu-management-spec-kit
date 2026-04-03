@@ -1,14 +1,11 @@
+from sqlalchemy import text
+
 from fastapi.testclient import TestClient
 
 from backend.main import app
-from backend.src.api import student_scores as api_module
-from backend.src.services.student_score_service import StudentScoreService
+from backend.src.db.session import SessionLocal
 
 client = TestClient(app)
-
-
-def setup_function() -> None:
-    api_module.service = StudentScoreService()
 
 
 def test_create_student_success() -> None:
@@ -32,8 +29,13 @@ def test_create_student_auto_number_increments() -> None:
 
 
 def test_create_student_exhausted_student_no_returns_409() -> None:
-    # 覆盖上限场景，避免循环创建 9999 条测试数据。
-    api_module.service._student_no_seq = 10000
+    """Next sequence value 10000 must return CONFLICT (autouse reset runs before this test)."""
+    db = SessionLocal()
+    try:
+        db.execute(text("UPDATE student_no_seq SET next_val = 9999 WHERE id = 1"))
+        db.commit()
+    finally:
+        db.close()
     response = client.post("/api/v1/students", json={"name": "张三", "gender": "male"})
     assert response.status_code == 409
     assert response.json()["detail"]["code"] == "CONFLICT"

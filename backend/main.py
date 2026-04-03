@@ -1,7 +1,8 @@
-'''
+"""
 main.py 是 FastAPI 的入口文件，负责启动整个 API 服务。
-'''
-# 快速开发高性能 API 接口的 Python 第三方库
+"""
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 # 导入 参数校验失败异常，方便你自己捕获并自定义错误返回
 from fastapi.exceptions import RequestValidationError
@@ -11,9 +12,16 @@ from fastapi.responses import JSONResponse
 
 from backend.src.api.student_query import router as student_query_router
 from backend.src.api.student_scores import router as student_router
+from backend.src.db.session import dispose_engine
 
-# 创建应用
-app = FastAPI(title="Student Score API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    yield
+    dispose_engine()
+
+
+app = FastAPI(title="Student Score API", version="0.1.0", lifespan=lifespan)
 
 # 配置跨域
 app.add_middleware(

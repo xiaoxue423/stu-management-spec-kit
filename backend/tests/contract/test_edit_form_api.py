@@ -1,14 +1,8 @@
 from fastapi.testclient import TestClient
 
 from backend.main import app
-from backend.src.api import student_scores as api_module
-from backend.src.services.student_score_service import StudentScoreService
 
 client = TestClient(app)
-
-
-def setup_function() -> None:
-    api_module.service = StudentScoreService()
 
 
 def test_get_edit_form_not_found() -> None:

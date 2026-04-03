@@ -10,8 +10,10 @@ from datetime import datetime
 # 用于处理分数字段，避免 float 精度误差（例如 89.9）。
 from decimal import Decimal
 
-# APIRouter 用于注册路由；HTTPException 用于抛出标准 HTTP 错误响应。
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from backend.src.db.deps import get_db
 # BaseModel 用于定义请求体模型并自动做参数校验。
 from pydantic import BaseModel
 
@@ -23,14 +25,10 @@ from backend.src.models.student import Gender
 from backend.src.schemas.score import ScoreResponse, UpsertScoreRequest
 # 学生相关 DTO：创建请求、更新请求、学生响应。
 from backend.src.schemas.student import CreateStudentRequest, StudentResponse, UpdateStudentRequest
-# DomainError：业务错误；StudentScoreService：封装学生与成绩业务逻辑。
-from backend.src.services.student_score_service import DomainError, StudentScoreService
+from backend.src.services.errors import DomainError
+from backend.src.services.student_score_service_factory import get_student_score_service
 
-# 定义该模块路由前缀与 Swagger 分组名。
 router = APIRouter(prefix="/api/v1/students", tags=["students"])
-# 路由层持有一个 service 实例，所有业务动作都委托给它执行。
-service = StudentScoreService()
-# 查询职责已拆分到 student_query.py 的 GET /api/v1/students，并在该文件处理只读参数校验。
 
 
 # 创建学生接口的请求体模型：只接收 name 与 gender。
@@ -74,11 +72,10 @@ def _raise_unknown() -> None:
 
 # POST /api/v1/students：创建学生基础信息。
 @router.post("")
-def create_student(body: CreateStudentBody) -> dict:
-    # 写接口职责：仅负责创建学生基础信息，不承载列表查询逻辑。
+def create_student(body: CreateStudentBody, db: Session = Depends(get_db)) -> dict:
     try:
-        # 将 API 层请求体映射为服务层 DTO，再交给 service 执行业务。
-        student = service.create_student(CreateStudentRequest(name=body.name, gender=body.gender))
+        svc = get_student_score_service(db)
+        student = svc.create_student(CreateStudentRequest(name=body.name, gender=body.gender))
         # 返回统一 data 包裹结构，并把领域模型转成响应 DTO。
         return {"data": StudentResponse.from_model(student)}
     # 可预期业务错误：按业务定义的状态码和错误码返回。
@@ -91,10 +88,10 @@ def create_student(body: CreateStudentBody) -> dict:
 
 # PUT /api/v1/students/{student_id}：更新学生基础信息。
 @router.put("/{student_id}")
-def update_student(student_id: int, body: UpdateStudentBody) -> dict:
+def update_student(student_id: int, body: UpdateStudentBody, db: Session = Depends(get_db)) -> dict:
     try:
-        # 传入路径参数 student_id 与更新 DTO，执行更新。
-        student = service.update_student(
+        svc = get_student_score_service(db)
+        student = svc.update_student(
             student_id,
             UpdateStudentRequest(
                 # name/gender 直接来自请求体。
@@ -116,10 +113,10 @@ def update_student(student_id: int, body: UpdateStudentBody) -> dict:
 
 # POST /api/v1/students/{student_id}/scores：录入或更新某学生某月某科成绩。
 @router.post("/{student_id}/scores")
-def upsert_score(student_id: int, body: UpsertScoreBody) -> dict:
+def upsert_score(student_id: int, body: UpsertScoreBody, db: Session = Depends(get_db)) -> dict:
     try:
-        # upsert 语义：存在则更新，不存在则新增（具体规则在 service）。
-        score = service.upsert_score(
+        svc = get_student_score_service(db)
+        score = svc.upsert_score(
             student_id, UpsertScoreRequest(month=body.month, subject=body.subject, score=body.score)
         )
         # 返回成绩响应 DTO。
@@ -134,10 +131,10 @@ def upsert_score(student_id: int, body: UpsertScoreBody) -> dict:
 
 # GET /api/v1/students/{student_id}/edit-form：一次性返回编辑页所需数据。
 @router.get("/{student_id}/edit-form")
-def get_edit_form(student_id: int) -> dict:
+def get_edit_form(student_id: int, db: Session = Depends(get_db)) -> dict:
     try:
-        # service 返回编辑表单聚合对象（学生信息 + 成绩列表）。
-        edit_form = service.get_edit_form(student_id)
+        svc = get_student_score_service(db)
+        edit_form = svc.get_edit_form(student_id)
         return {
             "data": {
                 # 学生基础信息。
